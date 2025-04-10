@@ -1,0 +1,269 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Final Project Proposal},
+  pdfauthor={Ellen Bledsoe},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Final Project Proposal}
+\author{Ellen Bledsoe}
+\date{2025-04-04}
+
+\begin{document}
+\maketitle
+
+\section{Final Project Proposal}\label{final-project-proposal}
+
+Answering the questions in this document are worth 20 points for
+Question 5 in Week 9's Assignment.
+
+\subsection{Where to Find Data}\label{where-to-find-data}
+
+\textbf{If you have your own data from a research project, use it!}
+
+If you don't have your own data, here are some suggestions for where to
+find data:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  From your lab group
+\end{enumerate}
+
+If you are working in a lab group, you can almost certainly find data to
+work with from your lab! Ask your PI or other lab members if you can use
+their data for this project. It is often helpful to have data that
+relates somewhat to a project or topic you are familiar with.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  From the ``Data is Plural'' Archive
+\end{enumerate}
+
+\href{https://www.data-is-plural.com/}{Data is Plural} is a weekly
+newsletter about complied datasets that people have found. They have an
+archive of all of the datasets that have been included in the
+newsletters, which is nearly 2000.
+
+Just because the datasets have been compiled does not mean that they are
+clean! I've used a few of them in class as demonstrations.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  From an agency, NGO, or non-profit
+\end{enumerate}
+
+If you have contacts in a local, state, or federal agency or non-profit,
+they likely have some languishing data floating around that you can
+clean up.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  A data repository
+\end{enumerate}
+
+There are many data repositories where you can find data. I would
+recommend sticking to some of the other options above to keep your
+search a bit more constrained, but feel free to ultimately use any
+dataset you find that you would like to use.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  From me!
+\end{enumerate}
+
+If you aren't having any success finding a dataset, let me know. I have
+a few I can share with you, if needed.
+
+\subsection{Project Guidelines}\label{project-guidelines}
+
+As a reminder, the general guidelines for the final project that the
+project will need to include core concepts covered in a certain number
+of weeks (6 for WFSC 496B, 10 for WFSC 596B), bringing together many
+aspects of what we will have learned through the course of the semester.
+
+The final project for this course is worth 300 points (WFSC 496B) or 500
+points (WFSC 596B).
+
+\subsection{Questions}\label{questions}
+
+The following answers are not binding! You can change your final project
+as much as you'd like from what you propose here.
+
+Answering these questions is meant to get you thinking about what data
+you would like to use and what tasks you might perform with the data.
+
+Note: Your data set does not need to be ecological in nature if you have
+another interest. It should also not be a dataset that we have used in
+class (see me if you have questions).
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  What data are you planning to use for the final project? Describe the
+  data: its contents, its format(s), one or more dataframes, etc. If you
+  have a link to the dataset, please include it. If you have a file that
+  you can upload, please add it to the assignment submission.
+\item
+  Does this data need to be cleaned in any way to make it tidy? If so,
+  what needs to occur?
+\item
+  Speaking generally, what tasks will you perform with this dataset? It
+  might include tasks that we have not yet covered how to accomplish in
+  class, but come up with a general plan that you would like to follow.
+\item
+  One of the requirements of the final project is to make some type of
+  plot using \texttt{ggplot2} with the data. What do you plan to plot
+  from your data?
+\end{enumerate}
+
+\emph{Answer}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#1}
+\CommentTok{\#the data that I am planning on using is a text file called e249\_Plant aboveground biomass data. I downloaded it off of EDI portal. It is from research focusing on General climate models (GCMs). The Biodiversity and Climate (BAC) experiment is focusing on the "direct and interactive effects" of plant species numbers, temperature, community composition, precipitation, and plant species numbers on "11 productivity, C and N dynamics, stability, and plant, microbe, and insect species abundances in CDR grassland ecosystems". I can only assume "CDR" means "Cedar Creek Long Term Ecological Research (CDR LTER)" because that\textquotesingle{}s all I was able to find on it. This was created by David Tilman.}
+\CommentTok{\#2}
+\CommentTok{\#it for sure needs to be cleaned. It has messy dates and column names, the information in the rows is inconsistent, the entire date column is incorrectly formatted, it\textquotesingle{}s extrememly long, data is described in the cells as mischellaneous or unsorted, etc.. It\textquotesingle{}s not great. }
+\CommentTok{\#3}
+\CommentTok{\#I\textquotesingle{}ll have to work on finding what is useful data and what is basically NA data. I\textquotesingle{}ll rename the columns and sort through the date columns. I\textquotesingle{}d also have to figure out how to arrange it so that it\textquotesingle{}s neat and create new columns to house the extra information that was left out or jammed into other cells.}
+\CommentTok{\#4}
+\CommentTok{\# I am currently planning to make a bar plot or line plot of the heat treatment and mass by year. With time, I could potentially do it by species but I\textquotesingle{}m not sure how much time that would take. }
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Submitting this File}\label{submitting-this-file}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Create a new repository in the class GitHub organization for your
+  final project. Use the naming convention ``LastName\_FinalProject''
+\item
+  Connect the repository to an RStudio project
+\item
+  Create a series of appropriate sub-directories in your RStudio
+  Project, including a \texttt{documents} folder.
+\item
+  Move this file to the documents folder.
+\item
+  Stage, commit, and push this document (and sub-directory) to GitHub
+  with a descriptive commit message.
+\end{enumerate}
+
+\end{document}
