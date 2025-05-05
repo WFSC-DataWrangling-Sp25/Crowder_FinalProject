@@ -1,0 +1,15 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+Final's Code
+
+```{r}
+library(tidyverse) rawdata <- read_tsv("../Final Project Data/data_raw/e249_Plant aboveground biomass data.txt") 
+
+rawdata %>% 
+  rename(Sample_date = 'Sample Date') %>% 
+  rename(Heat_Treatment = 'Heat Treatment')
+```

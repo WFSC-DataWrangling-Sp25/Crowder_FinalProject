@@ -1,0 +1,95 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+    output: github_document
+---
+
+## Final's Code (content done (3, 5, 6, 7, 8, 9))
+
+```{r}
+library(tidyverse) 
+rawdata <- read_tsv("../Final Project Data/data_raw/e249_Plant aboveground biomass data.txt") 
+
+rawdata <- rawdata %>% 
+  rename(Sample_date = 'Sample Date') %>% 
+  rename(Heat_Treatment = 'Heat Treatment') %>% 
+  rename(Mass_g_per_m2 = `Mass (g/m2)`) %>% 
+  rename(Species_name = 'Species')
+
+rawdata <- rawdata %>%
+  mutate(Sample_date = as_datetime(Sample_date, format = "%m/%d/%Y %H:%M")) %>% 
+  mutate(Sample_DOY = yday(Sample_date)) %>% 
+  mutate(Day = day(Sample_date),
+         Month = month(Sample_date),
+         Year = year(Sample_date)) %>% 
+  select(Day, Month, Year, Sample_DOY, Plot, Heat_Treatment, Species_name, `Mass_g_per_m2`)
+
+rawdata <- rawdata %>%
+  mutate(Heat_Treatment = case_when(
+    Heat_Treatment %in% c("HIgh", "high") ~ "High",
+    TRUE ~ Heat_Treatment
+  )) %>% 
+  filter(!is.na(Species_name))
+
+rawdata <- rawdata %>% 
+  mutate(Species_name = case_when(
+    Species_name == "achillea millefolium(lanulosa)" ~ "Achillea millefolium (lanulosa)",
+    Species_name == "Achillea millefolium(lanulosa)" ~ "Achillea millefolium (lanulosa)",
+    Species_name == "Artemisia (caudata) campestris" ~ "Artemisia campestris (caudata)",
+    Species_name == "Euphorbia (supina) maculata" ~ "Euphorbia maculata (supina)",
+    Species_name == "Lupinus perennis mid" ~ "Lupinus perennis+mid",
+    Species_name == "Setaria lutescens (glauca)" ~ "Setaria lutescens-glauca",
+    Species_name == "Lupinus perennis (mid)" ~ "Lupinus perennis+mid",
+    Species_name == "Ambrosia artemisiifolia elatior" ~ "Ambrosia artemisiifolia (elatior)",
+    Species_name == "coreopsis palmata" ~ "Coreopsis palmata",
+    Species_name == "cyperus sp." ~ "Cyperus sp.",
+    Species_name == "Carex sp" ~ "Carex sp.",
+    Species_name == "koeleria cristata" ~ "Koeleria cristata",
+    Species_name == "lespedeza capitata" ~ "Lespedeza capitata",
+    Species_name == "liatris aspera" ~ "Liatris aspera",
+    Species_name == "lupinus perennis" ~ "Lupinus perennis",
+    Species_name == "panicum virgatum" ~ "Panicum virgatum",
+    Species_name == "petalostemum purpurem" ~ "Petalostemum purpureum",
+    Species_name == "poa pratensis" ~ "Poa pratensis",
+    Species_name == "rumex acetosella" ~ "Rumex acetosella",
+    Species_name == "schizachyrium scoparium" ~ "Schizachyrium scoparium",
+    Species_name == "solidago rigida" ~ "Solidago rigida",
+    Species_name == "sorghastrum nutans" ~ "Sorghastrum nutans",
+    Species_name == "taraxicum officinalis" ~ "Taraxicum officinalis",
+    TRUE ~ Species_name))
+
+rawdata <- rawdata %>% 
+  separate(Species_name, into = c("Species_name", "Prev_names"), sep = "\\-", remove = F) %>% 
+  separate(Species_name, into = c("Species_name", "Other"), sep = "\\+", remove = F)
+
+rawdata <- rawdata %>% 
+  extract(Species_name, into = "Subspecies", regex = "\\(([^)]+)\\)", remove = F) %>% 
+  mutate(Species_name = str_remove(Species_name, "\\(caudata\\)|\\(lanulosa\\)|\\(major\\)|\\(supina\\)|\\(mid\\)|\\(elatior\\)"))
+
+rawdata %>% 
+  select(Species_name) %>% 
+  arrange(Species_name) %>% 
+  distinct()
+
+sepdata <- rawdata %>% 
+  separate(Species_name, into = c("Genus", "Species"), sep = " ")
+
+sepdata <- sepdata %>% 
+  mutate(Species = str_replace(Species, "sp.", NA_character_))
+
+rawdata <- rawdata %>%
+  extract(Species_name, into = "Miscellaneous", regex = "(?i)(Miscellaneous Grass|Miscellaneous forb|Miscellaneous grasses|Miscellaneous litter|Miscellaneous sp.|Unsorted biomass|Mosses & lichens|Mosses|Fungi)", remove = FALSE) %>% 
+  mutate(Species_name = str_remove(Species_name, "(?i)Miscellaneous Grass|Miscellaneous forb|Miscellaneous grasses|Miscellaneous litter|Miscellaneous sp\\.|Unsorted biomass|Mosses & lichens|Mosses|Fungi"))
+
+g_to_lbs <- function(g){
+  lbs_per_acre = 
+  return(lbs_per_acre)
+}
+
+#create a function that converts the mass from grams/m2 to lbs/acre
+### 1 meter = 3.28084 ft and 1 lb per acre = 0.0104 grams per square foot
+
+# Create a graph showing the relative weight of each plant
+
+```
