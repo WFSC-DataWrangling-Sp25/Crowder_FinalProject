@@ -1,22 +1,36 @@
 ---
+title: "Final's Code"
+author: "Cameron Crowder"
 editor_options: 
   markdown: 
     wrap: 72
     output: github_document
 ---
 
-## Final's Code (content done (3, 5, 6, 7, 8, 9))
+# Final's Code
+
+## Loading in the Tidyverse and loading in the data
 
 ```{r}
-library(tidyverse) 
-rawdata <- read_tsv("../Final Project Data/data_raw/e249_Plant aboveground biomass data.txt") 
+# library(tidyverse) 
+Original_data <- read_tsv("../Final Project Data/data_raw/e249_Plant aboveground biomass data.txt") 
+```
 
+## Organizing the Original Data 
+
+```{r}
+# Weeks 10, 6, 2, 3, 12, 7, 8, & 4 are in this section
+#Creating a new data frame to begin cleaning the data
+rawdata <- Original_data
+
+# Renaming the original data's columns to more appropriate names
 rawdata <- rawdata %>% 
   rename(Sample_date = 'Sample Date') %>% 
   rename(Heat_Treatment = 'Heat Treatment') %>% 
   rename(Mass_g_per_m2 = `Mass (g/m2)`) %>% 
   rename(Species_name = 'Species')
 
+# reorganizing the date column to useful numbers. This also includes creating the Day of Year column and separating the day, month, year, and getting rid of the extra columns
 rawdata <- rawdata %>%
   mutate(Sample_date = as_datetime(Sample_date, format = "%m/%d/%Y %H:%M")) %>% 
   mutate(Sample_DOY = yday(Sample_date)) %>% 
@@ -25,6 +39,7 @@ rawdata <- rawdata %>%
          Year = year(Sample_date)) %>% 
   select(Day, Month, Year, Sample_DOY, Plot, Heat_Treatment, Species_name, `Mass_g_per_m2`)
 
+# Changing the incorrect data in the Heat Treatment column
 rawdata <- rawdata %>%
   mutate(Heat_Treatment = case_when(
     Heat_Treatment %in% c("HIgh", "high") ~ "High",
@@ -32,6 +47,7 @@ rawdata <- rawdata %>%
   )) %>% 
   filter(!is.na(Species_name))
 
+# Changing the names of incorrectly inputted data in the Species column using case_when
 rawdata <- rawdata %>% 
   mutate(Species_name = case_when(
     Species_name == "achillea millefolium(lanulosa)" ~ "Achillea millefolium (lanulosa)",
@@ -59,37 +75,92 @@ rawdata <- rawdata %>%
     Species_name == "taraxicum officinalis" ~ "Taraxicum officinalis",
     TRUE ~ Species_name))
 
+# Separating the data from the Species column to new columns that fit them better. Sep values came from ChatGPT 
 rawdata <- rawdata %>% 
   separate(Species_name, into = c("Species_name", "Prev_names"), sep = "\\-", remove = F) %>% 
   separate(Species_name, into = c("Species_name", "Other"), sep = "\\+", remove = F)
 
+# Putting the data in parentheses into the Subspecies column then getting rid of the parentheses in the Species column to clean it up. Regex came from ChatGPT
 rawdata <- rawdata %>% 
   extract(Species_name, into = "Subspecies", regex = "\\(([^)]+)\\)", remove = F) %>% 
   mutate(Species_name = str_remove(Species_name, "\\(caudata\\)|\\(lanulosa\\)|\\(major\\)|\\(supina\\)|\\(mid\\)|\\(elatior\\)"))
 
+# This code checks the actual data and looks for unique values
 rawdata %>% 
   select(Species_name) %>% 
   arrange(Species_name) %>% 
   distinct()
 
-sepdata <- rawdata %>% 
-  separate(Species_name, into = c("Genus", "Species"), sep = " ")
-
-sepdata <- sepdata %>% 
-  mutate(Species = str_replace(Species, "sp.", NA_character_))
-
+# Creating a new column for Misc. answers that don't fit into the "normal" answers and then getting rid of the people. Regex came from ChatGPT
 rawdata <- rawdata %>%
   extract(Species_name, into = "Miscellaneous", regex = "(?i)(Miscellaneous Grass|Miscellaneous forb|Miscellaneous grasses|Miscellaneous litter|Miscellaneous sp.|Unsorted biomass|Mosses & lichens|Mosses|Fungi)", remove = FALSE) %>% 
   mutate(Species_name = str_remove(Species_name, "(?i)Miscellaneous Grass|Miscellaneous forb|Miscellaneous grasses|Miscellaneous litter|Miscellaneous sp\\.|Unsorted biomass|Mosses & lichens|Mosses|Fungi"))
+```
 
+## Turning the Original Data into Data for Analysis
+
+```{r}
+# This section contains Week 10
+# Creating the sepdata data frame and then separating the Species Name column into Genus and Species
+sepdata <- rawdata %>% 
+  separate(Species_name, into = c("Genus", "Species"), sep = " ")
+
+# getting rid of unnecessary info in the Species column and replacing it with NA
+sepdata <- sepdata %>% 
+  mutate(Species = str_replace(Species, "sp.", NA_character_)) 
+```
+
+## Making a function
+
+```{r}
+# Week 11 is in this section
+# The function that converts grams per meter^2 to lbs per acre
 g_to_lbs <- function(g){
-  lbs_per_acre = 
+  lbs_per_acre = g*8.729
   return(lbs_per_acre)
 }
 
-#create a function that converts the mass from grams/m2 to lbs/acre
-### 1 meter = 3.28084 ft and 1 lb per acre = 0.0104 grams per square foot
+# This is the function being applied to the sepdata to create a new column
+sepdata <- sepdata %>% 
+  mutate(lbs_per_acre = g_to_lbs(Mass_g_per_m2))
+```
 
-# Create a graph showing the relative weight of each plant
+## Creating a Graph (Graph 1)
 
+```{r}
+# Weeks 5 and 9 are in this section
+# Loading in the correct package
+library(ggplot2)
+
+# Create a graph showing the relative amount of each species
+Count_sepdata <- sepdata %>%
+  group_by(Genus, Species) %>% 
+  unite("United", c("Genus", "Species"), sep = " " )
+species_counts <- ggplot(Count_sepdata)+ 
+  geom_bar(aes(x = United), size = 12)+
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.5))+ # used Chatgpt here
+  labs(x = "Species", y = "Number of Instances")
+
+# The above information as an image using a relative path
+ggsave("../Final Project Data/outputs/species_counts.png", height = 7, width = 12)
+```
+
+## Creating a Graph (Graph 2)
+
+```{r}
+# Creating Mass_sepdata data frame to organize data in a way that can show the top 10 entries in the lbs_per_acre column
+ Mass_sepdata <- sepdata %>%
+   group_by(lbs_per_acre, Genus, Species) %>% 
+   unite("United", c("Genus", "Species"), sep = " ") %>% 
+   arrange(desc(lbs_per_acre)) %>% 
+  head(10)
+
+# The ggplot code that created the bar graph showing mass of the 10 largest entries in lbs_per_acre
+ggplot(Mass_sepdata, aes(x = United, y = lbs_per_acre, fill = Heat_Treatment))+
+  geom_bar(stat = "identity")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.5))+ # used Chatgpt here
+  labs(x = "Species", y = "Pounds per Acre")
+  
+# Code that saves the ggplot into the Output Folder using a relative path
+ggsave("../Final Project Data/outputs/species_mass.png", height = 7, width = 10)
 ```
