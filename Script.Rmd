@@ -12,11 +12,11 @@ editor_options:
 ## Loading in the Tidyverse and loading in the data
 
 ```{r}
-# library(tidyverse) 
+ library(tidyverse) 
 Original_data <- read_tsv("../Final Project Data/data_raw/e249_Plant aboveground biomass data.txt") 
 ```
 
-## Organizing the Original Data 
+## Organizing the Original Data
 
 ```{r}
 # Weeks 10, 6, 2, 3, 12, 7, 8, & 4 are in this section
@@ -136,7 +136,7 @@ library(ggplot2)
 Count_sepdata <- sepdata %>%
   group_by(Genus, Species) %>% 
   unite("United", c("Genus", "Species"), sep = " " )
-species_counts <- ggplot(Count_sepdata)+ 
+ggplot(Count_sepdata)+ 
   geom_bar(aes(x = United), size = 12)+
   theme(axis.text.x = element_text(angle = 90, hjust = 0.5))+ # used Chatgpt here
   labs(x = "Species", y = "Number of Instances")
@@ -156,7 +156,7 @@ ggsave("../Final Project Data/outputs/species_counts.png", height = 7, width = 1
   head(10)
 
 # The ggplot code that created the bar graph showing mass of the 10 largest entries in lbs_per_acre
-ggplot(Mass_sepdata, aes(x = United, y = lbs_per_acre, fill = Heat_Treatment))+
+ggplot(Mass_sepdata, aes(x = United, y = lbs_per_acre, fill = Heat_Treatment, color = ))+
   geom_bar(stat = "identity")+
   theme(axis.text.x = element_text(angle = 90, hjust = 0.5))+ # used Chatgpt here
   labs(x = "Species", y = "Pounds per Acre")
