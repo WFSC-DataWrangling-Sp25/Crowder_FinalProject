@@ -473,7 +473,9 @@ rawdata %&gt;%
 <pre class="r"><code># Creating a new column for Misc. answers that don&#39;t fit into the &quot;normal&quot; answers and then getting rid of the people. Regex came from ChatGPT
 rawdata &lt;- rawdata %&gt;%
   extract(Species_name, into = &quot;Miscellaneous&quot;, regex = &quot;(?i)(Miscellaneous Grass|Miscellaneous forb|Miscellaneous grasses|Miscellaneous litter|Miscellaneous sp.|Unsorted biomass|Mosses &amp; lichens|Mosses|Fungi)&quot;, remove = FALSE) %&gt;% 
-  mutate(Species_name = str_remove(Species_name, &quot;(?i)Miscellaneous Grass|Miscellaneous forb|Miscellaneous grasses|Miscellaneous litter|Miscellaneous sp\\.|Unsorted biomass|Mosses &amp; lichens|Mosses|Fungi&quot;))</code></pre>
+  mutate(Species_name = str_remove(Species_name, &quot;(?i)Miscellaneous Grass|Miscellaneous forb|Miscellaneous grasses|Miscellaneous litter|Miscellaneous sp\\.|Unsorted biomass|Mosses &amp; lichens|Mosses|Fungi&quot;))
+
+write_csv(rawdata, &quot;../Final Project Data/data_clean/Rawdata.csv&quot;)</code></pre>
 </div>
 <div id="turning-the-original-data-into-data-for-analysis" class="section level2">
 <h2>Turning the Original Data into Data for Analysis</h2>

@@ -95,6 +95,8 @@ rawdata %>%
 rawdata <- rawdata %>%
   extract(Species_name, into = "Miscellaneous", regex = "(?i)(Miscellaneous Grass|Miscellaneous forb|Miscellaneous grasses|Miscellaneous litter|Miscellaneous sp.|Unsorted biomass|Mosses & lichens|Mosses|Fungi)", remove = FALSE) %>% 
   mutate(Species_name = str_remove(Species_name, "(?i)Miscellaneous Grass|Miscellaneous forb|Miscellaneous grasses|Miscellaneous litter|Miscellaneous sp\\.|Unsorted biomass|Mosses & lichens|Mosses|Fungi"))
+
+write_csv(rawdata, "../Final Project Data/data_clean/Rawdata.csv")
 ```
 
 ## Turning the Original Data into Data for Analysis
