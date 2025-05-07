@@ -2,6 +2,10 @@
 
 Final project for Data Wrangling in R
 
+# The Data
+
+The data that I am using is a text file called e249_Plant aboveground biomass data. I downloaded it off of EDI portal. It is from research focusing on General climate models (GCMs). The Biodiversity and Climate (BAC) experiment is focusing on the "direct and interactive effects" of plant species numbers, temperature, community composition, precipitation, and plant species numbers on "11 productivity, C and N dynamics, stability, and plant, microbe, and insect species abundances in CDR grassland ecosystems". I can only assume "CDR" means "Cedar Creek Long Term Ecological Research (CDR LTER)" because that's all I was able to find on it. This was created by David Tilman.
+
 # Summary of this Repository
 
 This repo is made to hold the data that will be used for the final project of Data Wrangling in R (Ellen Bledsoe's class at University of Arizona). This will be where the final is created and stored.
