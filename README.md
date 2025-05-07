@@ -16,7 +16,7 @@ The original data that I downloaded is in the data_raw folder. It hasn't been ch
 
 ## Weeks Covered
 
-The weeks that this project cover are 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, and 12. I have put text of relevant weeks in the Script.Rmd file to make it easier to count. They are in the sentences part next to the hashtags.
+The weeks that this project cover are 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, and 12. I have put text of relevant weeks in the Script.Rmd file to make it easier to count. They are in the sentences part next to the hashtags.
 
 ## Meeting Expectations
 
