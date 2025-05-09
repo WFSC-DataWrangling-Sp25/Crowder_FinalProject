@@ -13,7 +13,7 @@ editor_options:
 
 ```{r}
  library(tidyverse) 
-Original_data <- read_tsv("../Final Project Data/data_raw/e249_Plant aboveground biomass data.txt") 
+Original_data <- read_tsv("../data_raw/e249_Plant aboveground biomass data.txt") 
 ```
 
 ## Organizing the Original Data
@@ -96,7 +96,7 @@ rawdata <- rawdata %>%
   extract(Species_name, into = "Miscellaneous", regex = "(?i)(Miscellaneous Grass|Miscellaneous forb|Miscellaneous grasses|Miscellaneous litter|Miscellaneous sp.|Unsorted biomass|Mosses & lichens|Mosses|Fungi)", remove = FALSE) %>% 
   mutate(Species_name = str_remove(Species_name, "(?i)Miscellaneous Grass|Miscellaneous forb|Miscellaneous grasses|Miscellaneous litter|Miscellaneous sp\\.|Unsorted biomass|Mosses & lichens|Mosses|Fungi"))
 
-write_csv(rawdata, "../Final Project Data/data_clean/Rawdata.csv")
+write_csv(rawdata, "../data_clean/Rawdata.csv")
 ```
 
 ## Turning the Original Data into Data for Analysis
