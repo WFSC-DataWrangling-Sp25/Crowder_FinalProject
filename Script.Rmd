@@ -12,16 +12,26 @@ editor_options:
 ## Loading in the Tidyverse and loading in the data
 
 ```{r}
-# library(tidyverse) 
-Original_data <- read_tsv("../Final Project Data/data_raw/e249_Plant aboveground biomass data.txt") 
+library(tidyverse) 
+#Original_data <- read_tsv("../Final Project Data/data_raw/e249_Plant aboveground biomass data.txt") 
+
+#REVIEW: changed file path
+Original_data <- read_tsv("data_raw/e249_Plant aboveground biomass data.txt")
+
+#REVIEW: This file path works better because your Rmd file is in the same folder as your working directory so you don’t need the ../Final Project Data/ part. However, I would recomend moving your final project script into your scripts folder and then the filepath that you used would work.
+
+#REVIEW: Also I recommend not having spaces in your working directory name and also naming this Rmd file something other than "Script" such as "Final_Project_script".
 ```
 
-## Organizing the Original Data 
+## Organizing the Original Data
 
 ```{r}
 # Weeks 10, 6, 2, 3, 12, 7, 8, & 4 are in this section
 #Creating a new data frame to begin cleaning the data
 rawdata <- Original_data
+
+
+#REVIEW: you could have a different df name like surveys or plant or something other than data raw so it doesn’t get confusing
 
 # Renaming the original data's columns to more appropriate names
 rawdata <- rawdata %>% 
@@ -29,6 +39,27 @@ rawdata <- rawdata %>%
   rename(Heat_Treatment = 'Heat Treatment') %>% 
   rename(Mass_g_per_m2 = `Mass (g/m2)`) %>% 
   rename(Species_name = 'Species')
+
+#REVIEW: you can do this all in one rename function like this ex:
+
+#rawdata <- rawdata %>% 
+#  rename(
+#    Sample_date = 'Sample Date',
+#    Heat_Treatment = 'Heat Treatment',
+#    Mass_g_per_m2 = `Mass (g/m2)`,
+#    Species_name = 'Species'
+#  )
+
+#REVIEW: also if you wanted to you could do more consistent capitalization to make things easier ex:
+
+#rawdata <- rawdata %>% 
+#  rename(
+#    sample_date = 'Sample Date',
+#    heat_treatment = 'Heat Treatment',
+#    mass_g_per_m2 = `Mass (g/m2)`,
+#    species_name = 'Species'
+#  )
+
 
 # reorganizing the date column to useful numbers. This also includes creating the Day of Year column and separating the day, month, year, and getting rid of the extra columns
 rawdata <- rawdata %>%
@@ -76,9 +107,12 @@ rawdata <- rawdata %>%
     TRUE ~ Species_name))
 
 # Separating the data from the Species column to new columns that fit them better. Sep values came from ChatGPT 
+
+
 rawdata <- rawdata %>% 
   separate(Species_name, into = c("Species_name", "Prev_names"), sep = "\\-", remove = F) %>% 
   separate(Species_name, into = c("Species_name", "Other"), sep = "\\+", remove = F)
+
 
 # Putting the data in parentheses into the Subspecies column then getting rid of the parentheses in the Species column to clean it up. Regex came from ChatGPT
 rawdata <- rawdata %>% 
@@ -123,6 +157,9 @@ g_to_lbs <- function(g){
 # This is the function being applied to the sepdata to create a new column
 sepdata <- sepdata %>% 
   mutate(lbs_per_acre = g_to_lbs(Mass_g_per_m2))
+
+#REVIEW: I would save this into your data clean folder at this point you didnt have one so I made one 
+write_csv(sepdata, "data_clean/cleaned_sepdata.csv")
 ```
 
 ## Creating a Graph (Graph 1)
@@ -136,13 +173,52 @@ library(ggplot2)
 Count_sepdata <- sepdata %>%
   group_by(Genus, Species) %>% 
   unite("United", c("Genus", "Species"), sep = " " )
-species_counts <- ggplot(Count_sepdata)+ 
-  geom_bar(aes(x = United), size = 12)+
+
+#REVIEW: I would maybe call the column united_species or something more specific because just united may be confusing later on when you look back at the code
+
+species_counts <-  ggplot(Count_sepdata)+ 
+  geom_bar(aes(x = United), linewidth = 12)+
   theme(axis.text.x = element_text(angle = 90, hjust = 0.5))+ # used Chatgpt here
   labs(x = "Species", y = "Number of Instances")
 
 # The above information as an image using a relative path
-ggsave("../Final Project Data/outputs/species_counts.png", height = 7, width = 12)
+ggsave("outputs/species_counts.png", height = 7, width = 12)
+
+#REVIEW: I changed size to linewidth because ggplot told me to 
+
+#REVIEW: I made this plot because I feel like the readability is better, I set it to increasing number of counts rather than alphabetical, not sure if this will be useful to you 
+
+
+Count_sepdata2 <- Count_sepdata %>%
+  count(United) %>%
+  arrange(n)
+
+species_counts2 <- ggplot(Count_sepdata2, aes(x = fct_reorder(United, n), y = n)) +
+  geom_bar(stat = "identity", fill = "steelblue", width = 0.7) +
+  coord_flip() +
+  theme_classic() +
+  theme(
+    axis.text = element_text(size = 8),
+    axis.title = element_text(size = 8)
+  ) +
+  labs(x = "Species",
+       y = "Number of Instances",
+       title = "Species Occurrence Counts")
+ 
+ggsave("outputs/species_counts2.png", width = 8, height = 12)
+
+#REVIEW: here is the same plot without the coords flipped 
+species_counts3 <- ggplot(Count_sepdata2, aes(x = fct_reorder(United, n), y = n)) +
+  geom_bar(stat = "identity", fill = "steelblue", width = .7) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 5),
+    axis.text.y = element_text(size = 10),
+    axis.title = element_text(size = 12)
+  ) +
+  labs(x = "Species", y = "Number of Instances", title = "Species Occurrence Counts")
+ 
+ ggsave("outputs/species_counts3.png", width = 12, height = 8)
 ```
 
 ## Creating a Graph (Graph 2)
@@ -155,6 +231,8 @@ ggsave("../Final Project Data/outputs/species_counts.png", height = 7, width = 1
    arrange(desc(lbs_per_acre)) %>% 
   head(10)
 
+ head(Mass_sepdata)
+ 
 # The ggplot code that created the bar graph showing mass of the 10 largest entries in lbs_per_acre
 ggplot(Mass_sepdata, aes(x = United, y = lbs_per_acre, fill = Heat_Treatment))+
   geom_bar(stat = "identity")+
@@ -163,4 +241,21 @@ ggplot(Mass_sepdata, aes(x = United, y = lbs_per_acre, fill = Heat_Treatment))+
   
 # Code that saves the ggplot into the Output Folder using a relative path
 ggsave("../Final Project Data/outputs/species_mass.png", height = 7, width = 10)
+
+#REVIEW: i changed the file path from "../Final Project Data/output/species_mass.png" to "outputs/species_mass.png" because your markdown folder is in your working director, so it doesn’t need the "../Final Project Data"
+
+####################################################################################
+
+#REVIEW: I made this plot from your code, its not that different I just think the readability is a bit better 
+
+Mass_sepdata2 <- Mass_sepdata %>%
+  mutate(United = gsub(" ", "\n", United))
+
+ggplot(Mass_sepdata2, aes(x = United, y = lbs_per_acre, fill = Heat_Treatment)) +
+  geom_bar(stat = "identity") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 0, hjust = 0.5)) + 
+  labs(x = "Species", y = "Pounds per Acre")
+  
+
 ```
