@@ -4,7 +4,7 @@ Final project for Data Wrangling in R
 
 # The Data
 
-The data that I am using is a text file called e249_Plant aboveground biomass data. I downloaded it off of EDI portal. It is from research focusing on General climate models (GCMs). The Biodiversity and Climate (BAC) experiment is focusing on the "direct and interactive effects" of plant species numbers, temperature, community composition, precipitation, and plant species numbers on "11 productivity, C and N dynamics, stability, and plant, microbe, and insect species abundances in CDR grassland ecosystems". I can only assume "CDR" means "Cedar Creek Long Term Ecological Research (CDR LTER)" because that's all I was able to find on it. This was created by David Tilman.
+The data that I am using is a text file called e249_Plant aboveground biomass data. I downloaded it off of EDI portal. It is from research focusing on General climate models (GCMs). The Biodiversity and Climate (BAC) experiment is focusing on the "direct and interactive effects" of plant species numbers, temperature, community composition, precipitation, and plant species numbers on "11 productivity, C and N dynamics, stability, and plant, microbe, and insect species abundances in CDR grassland ecosystems". I can only assume "CDR" means "Cedar Creek Long Term Ecological Research (CDR LTER)" because that's all I was able to find on it. This was created by David Tilman. I'm planning on using this data to create a bar graph showing mass of the 10 largest entries in lbs_per_acre and create a graph showing the total amount of each species.
 
 # Summary of this Repository
 
