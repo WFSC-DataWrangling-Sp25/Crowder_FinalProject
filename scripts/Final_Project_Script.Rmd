@@ -134,6 +134,11 @@ sepdata <- sepdata %>%
 # Loading in the correct package
 library(ggplot2)
 
+# Create a graph showing the amount of each species counted
+Count_sepdata <- sepdata %>%
+  group_by(Genus, Species) %>% 
+  unite("United", c("Genus", "Species"), sep = " " )
+
 # the graph that I was told about
 Count_sepdata2 <- Count_sepdata %>%
   count(United) %>%
